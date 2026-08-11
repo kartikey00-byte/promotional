@@ -2,7 +2,7 @@ export const translations = {
   en: {
     navbar: {
       title: "Chandrabadni Ayurved Evam Panchkarma Center",
-      subtitle: "(A constituent unit of G. C. Dental Care)",
+      subtitle: "(A constituent unit of Chandrabadni Dental Care)",
       home: "Home",
       about: "About Us",
       treatments: "Treatments",
@@ -296,7 +296,7 @@ export const translations = {
   hi: {
     navbar: {
       title: "चंद्रबदनी आयुर्वेद एवं पंचकर्म केंद्र",
-      subtitle: "(जी. सी. डेंटल केयर की एक घटक इकाई)",
+      subtitle: "(चंद्रबदनी डेंटल केयर की एक घटक इकाई)",
       home: "मुख्य पृष्ठ",
       about: "हमारे बारे में",
       treatments: "उपचार सूची",

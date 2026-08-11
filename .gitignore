@@ -39,3 +39,4 @@ dist-ssr
 backend/node_modules/
 
 .vercel
+.env*

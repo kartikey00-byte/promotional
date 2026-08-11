@@ -64,7 +64,7 @@ app.post('/api/contact', async (req, res) => {
 
       const mailOptions = {
         from: `"${name} via Website" <${process.env.SMTP_USER}>`,
-        to: process.env.DOCTOR_EMAIL || 'dr.harshbmamgain@gmail.com',
+        to: process.env.DOCTOR_EMAIL || 'dr.harshmamgain@gmail.com',
         replyTo: email,
         subject: `[Website Query] ${subject}`,
         text: `Namaste Dr. Harsh Mani Mamgain,\n\nYou have received a new health enquiry from your website:\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nSubject: ${subject}\n\nMessage:\n${message}\n\n--\nChandrabadni Ayurved Evam Panchkarma Center`,

@@ -99,7 +99,7 @@ export default function Contact({ language }) {
             </div>
             <div className="contact-box-details">
               <h4>{t.emailTitle}</h4>
-              <p>dr.harshbmamgain@gmail.com</p>
+              <p>dr.harshmamgain@gmail.com</p>
             </div>
           </div>
 

@@ -18,31 +18,35 @@ export default function Contact({ language }) {
   const t = translations[language].contact;
   const navT = translations[language].navbar;
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus(null);
 
     try {
-      const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:5000" : "");
-      const response = await fetch(`${API_URL}/api/contact`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(formData)
-      });
+      const isHindi = language === 'hi';
+      const greeting = isHindi 
+        ? `नमस्ते डॉ. हर्ष ममगाईं,\n\nमैं चंद्रबदनी आयुर्वेद वेबसाइट के माध्यम से संपर्क करना चाहता हूँ:`
+        : `Namaste Dr. Harsh Mamgain,\n\nI would like to enquire about Ayurvedic treatments at your clinic:`;
 
-      const result = await response.json();
+      const labelName = isHindi ? 'नाम' : 'Name';
+      const labelEmail = isHindi ? 'ईमेल' : 'Email';
+      const labelPhone = isHindi ? 'फ़ोन' : 'Phone';
+      const labelSubject = isHindi ? 'विषय' : 'Subject';
+      const labelMsg = isHindi ? 'संदेश' : 'Message';
 
-      if (response.ok && result.success) {
-        setSubmitStatus('success');
-        setSubmitted(true);
-      } else {
-        setSubmitStatus('error');
-      }
+      const whatsappText = `${greeting}\n\n• *${labelName}:* ${formData.name}\n• *${labelEmail}:* ${formData.email}\n• *${labelPhone}:* ${formData.phone}\n• *${labelSubject}:* ${formData.subject}\n• *${labelMsg}:* ${formData.message}`;
+
+      const encodedText = encodeURIComponent(whatsappText);
+      const whatsappURL = `https://wa.me/919888532256?text=${encodedText}`;
+
+      // Open WhatsApp Web or App in a new tab
+      window.open(whatsappURL, '_blank');
+
+      setSubmitStatus('success');
+      setSubmitted(true);
     } catch (error) {
-      console.error("Form submission error:", error);
+      console.error("WhatsApp redirection error:", error);
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
@@ -134,30 +138,32 @@ export default function Contact({ language }) {
             <div style={{ textAlign: 'center', padding: '20px 0' }}>
               <div className="modal-toast" style={{ justifyContent: 'center', marginBottom: '24px', background: '#e8f5e9', border: '1px solid #c8e6c9', color: '#2e7d32' }}>
                 <CheckCircle size={28} style={{ marginRight: '8px' }} />
-                <span>{t.successTitle}</span>
+                <span>{language === 'hi' ? 'व्हाट्सएप चैट तैयार है!' : 'WhatsApp Chat Prepared!'}</span>
               </div>
               <h4 style={{ fontSize: '1.45rem', marginBottom: '12px' }}>{t.successGreeting}, {formData.name}</h4>
-              <p style={{ marginBottom: '24px', fontSize: '0.95rem', color: 'var(--text-muted)' }}>
-                {t.successSub} <strong>"{formData.subject}"</strong> {t.successEnd}
+              <p style={{ marginBottom: '24px', fontSize: '0.95rem', color: 'var(--text-muted)', lineHeight: '1.5' }}>
+                {language === 'hi' 
+                  ? 'आपकी स्वास्थ्य पूछताछ व्हाट्सएप मैसेज के रूप में तैयार है। अगर चैट विंडो नहीं खुली, तो नीचे दिए गए बटन पर क्लिक करें।' 
+                  : 'Your query has been prepared. If the chat window did not open automatically, please click the button below to send it.'}
               </p>
               
               <div style={{ background: 'var(--primary-bg)', padding: '24px', borderRadius: 'var(--border-radius-md)', border: '1px dashed var(--primary)', marginBottom: '30px', textAlign: 'center' }}>
-                <h5 style={{ fontSize: '1.05rem', marginBottom: '8px', color: 'var(--primary-dark)', fontWeight: 700 }}>{t.instantHeading}</h5>
-                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '16px' }}>{t.instantDesc}</p>
                 <a 
-                  href={`https://wa.me/919888532256?text=${encodeURIComponent(`Namaste Dr. Harsh Mani Mamgain, I have a query from your website:\n\n*Name*: ${formData.name}\n*Phone*: ${formData.phone}\n*Email*: ${formData.email}\n*Subject*: ${formData.subject}\n*Message*: ${formData.message}`)}`}
+                  href={`https://wa.me/919888532256?text=${encodeURIComponent(
+                    `${language === 'hi' ? 'नमस्ते डॉ. हर्ष ममगाईं,' : 'Namaste Dr. Harsh Mamgain,'}\n\n• *${language === 'hi' ? 'नाम' : 'Name'}:* ${formData.name}\n• *${language === 'hi' ? 'ईमेल' : 'Email'}:* ${formData.email}\n• *${language === 'hi' ? 'फ़ोन' : 'Phone'}:* ${formData.phone}\n• *${language === 'hi' ? 'विषय' : 'Subject'}:* ${formData.subject}\n• *${language === 'hi' ? 'संदेश' : 'Message'}:* ${formData.message}`
+                  )}`}
                   target="_blank"
                   rel="noreferrer"
                   className="btn btn-accent"
-                  style={{ width: '100%', display: 'inline-flex', gap: '8px', color: 'var(--primary-dark)' }}
+                  style={{ width: '100%', display: 'inline-flex', gap: '8px', color: 'var(--primary-dark)', justifyContent: 'center' }}
                 >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-                  {t.btnWhatsApp}
+                  {language === 'hi' ? 'व्हाट्सएप चैट खोलें' : 'Open WhatsApp Chat'}
                 </a>
               </div>
 
               <button className="btn btn-outline" style={{ width: '100%' }} onClick={handleReset}>
-                {t.btnReset}
+                {language === 'hi' ? 'दूसरी पूछताछ भेजें' : 'Send Another Message'}
               </button>
             </div>
           ) : (
